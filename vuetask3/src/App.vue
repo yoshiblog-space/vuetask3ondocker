@@ -1,83 +1,63 @@
 <template>
   <div id="app">
     <h1>ToDoリスト</h1>
-    <div class="status">
-      <input type="radio" name="state" v-model="checkDisplayState" value="すべて">すべて
-      <input type="radio" name="state" v-model="checkDisplayState" value="作業中">作業中
-      <input type="radio" name="state" v-model="checkDisplayState" value="完了">完了
-    </div>
-
-    <table>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>コメント</th>
-          <th>状態</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr  v-for="todo in todoList" v-bind:key="todo.todoId">
-          <td v-if="displayPermit(checkDisplayState, todo.todoState)">{{ todo.todoId }}</td>
-          <td v-if="displayPermit(checkDisplayState, todo.todoState)">{{ todo.todoComment }}</td>
-          <td v-if="displayPermit(checkDisplayState, todo.todoState)"><button type="button"  @click="changeTodoState(todo.todoState, todo.todoId)">{{ todo.todoState }}</button></td>
-          <td v-if="displayPermit(checkDisplayState, todo.todoState)"><button type="button" @click="delTodoList(todo.todoId)">削除</button></td>
-        </tr>
-      </tbody>
-    </table>
-
+    <todo-Filter :stateFilter="stateFilters" @selectFilter="getSelectName" />
+    <display-Table
+      :todoList="todoList"
+      :stateSelect="checkDisplayState"
+      @todoLength="updatetodoLength"
+    />
     <h2>新規タスクの追加</h2>
-    <input v-model="todoInput">
-    <button @click="addTodoList" type="button">追加</button>
+    <add-Todo @getTodo="addTodoList" />
   </div>
 </template>
 
 <script>
+import todoFilter from "./components/TodoFilter";
+import displayTable from "./components/DisplayTable";
+import addTodo from "./components/AddTodo";
 export default {
   name: "App",
-  data () {
+  components: {
+    "todo-Filter": todoFilter,
+    "display-Table": displayTable,
+    "add-Todo": addTodo,
+  },
+  data() {
     return {
-      todoInput: '',
       todoList: [],
       todoIdCount: 0,
-      todoStateDefault: '作業中',
-      checkDisplayState: 'すべて',
-    }
+      stateFilters: [
+        { id: 1, label: "すべて", defaultState: 1 },
+        { id: 2, label: "作業中", defaultState: 0 },
+        { id: 3, label: "完了", defaultState: 0 },
+      ],
+      todoStateDefault: "作業中",
+      checkDisplayState: "すべて",
+    };
   },
-  methods:{
-    addTodoList(){
-      if(!this.todoInput){
-        return;
-      }
+  methods: {
+    updatetodoLength(length) {
+      console.log(length);
+      this.todoIdCount = length;
+    },
+    getSelectName(clickLabel) {
+      this.checkDisplayState = clickLabel;
+    },
+    addTodoList(todoComment) {
       this.todoList.push({
-        todoId: this.todoIdCount++,
-        todoComment: this.todoInput,
+        todoId: this.todoIdCount,
+        todoComment,
         todoState: this.todoStateDefault,
       });
-      this.todoInput = '';
+      this.todoIdCount++;
     },
-    delTodoList(delTodoId){
-      this.$delete(this.todoList, delTodoId);
-      this.todoList.forEach((element, key) => {
-        element.todoId = key;
-      });
-      this.todoIdCount = this.todoList.length;
-      },
-    changeTodoState(todoStatus, todoId){
-      if(todoStatus === '作業中'){
-        this.todoList[todoId].todoState = '完了';
-      }else{
-        this.todoList[todoId].todoState = '作業中';
-      }
-    },
-    displayPermit(checkDisplayState,todoStatus){
-        return (checkDisplayState === 'すべて' || checkDisplayState === todoStatus);
-    }
-  }
-}
+  },
+};
 </script>
 
 <style>
-  body{
-    font-family: 'Times New Roman', Times, serif
-  }
+body {
+  font-family: "Times New Roman", Times, serif;
+}
 </style>
