@@ -8,7 +8,7 @@
 export default {
   data() {
     return {
-      todoInput: "",
+      todoInput: ""
     };
   },
   emits: ["getTodo"],
@@ -20,7 +20,7 @@ export default {
       this.$emit("getTodo", this.todoInput);
 
       this.todoInput = "";
-    },
-  },
+    }
+  }
 };
 </script>

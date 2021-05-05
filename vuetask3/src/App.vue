@@ -21,7 +21,7 @@ export default {
   components: {
     "todo-Filter": todoFilter,
     "display-Table": displayTable,
-    "add-Todo": addTodo,
+    "add-Todo": addTodo
   },
   data() {
     return {
@@ -30,10 +30,10 @@ export default {
       stateFilters: [
         { id: 1, label: "すべて", defaultState: 1 },
         { id: 2, label: "作業中", defaultState: 0 },
-        { id: 3, label: "完了", defaultState: 0 },
+        { id: 3, label: "完了", defaultState: 0 }
       ],
       todoStateDefault: "作業中",
-      checkDisplayState: "すべて",
+      checkDisplayState: "すべて"
     };
   },
   methods: {
@@ -48,11 +48,11 @@ export default {
       this.todoList.push({
         todoId: this.todoIdCount,
         todoComment,
-        todoState: this.todoStateDefault,
+        todoState: this.todoStateDefault
       });
       this.todoIdCount++;
-    },
-  },
+    }
+  }
 };
 </script>
 
