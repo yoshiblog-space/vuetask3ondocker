@@ -34,9 +34,9 @@
 export default {
   props: {
     todoList: { type: Array },
-    stateSelect: { type: String },
+    stateSelect: { type: String }
   },
-  emits:["todoLength"],
+  emits: ["todoLength"],
   methods: {
     displayPermit(stateSelect, todoStatus) {
       return stateSelect === "すべて" || stateSelect === todoStatus;
@@ -46,8 +46,7 @@ export default {
       this.todoList.forEach((element, key) => {
         element.todoId = key;
       });
-      this.$emit('todoLength',this.todoList.length)
-
+      this.$emit("todoLength", this.todoList.length);
     },
     changeTodoState(todoStatus, todoId) {
       if (todoStatus === "作業中") {
@@ -55,7 +54,7 @@ export default {
       } else {
         this.todoList[todoId].todoState = "作業中";
       }
-    },
-  },
+    }
+  }
 };
 </script>
