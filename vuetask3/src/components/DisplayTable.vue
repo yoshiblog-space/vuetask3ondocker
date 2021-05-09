@@ -39,17 +39,25 @@ export default {
     },
     changeTodoState(todoStatus, todoId) {
       if (todoStatus === "作業中") {
-        this.$store.dispatch("doChangeTodoState", {
-          todoId,
-          todoState: "完了",
-        });
-        this.todoList[todoId].todoState = "完了";
+        this.$store
+          .dispatch("doChangeTodoState", {
+            todoId,
+            todoState: "完了",
+          })
+          .then((this.todoList[todoId].todoState = "完了"))
+          .catch((error) => {
+            console.error(error);
+          });
       } else {
-        this.$store.dispatch("doChangeTodoState", {
-          todoId,
-          todoState: "作業中",
-        });
-        this.todoList[todoId].todoState = "作業中";
+        this.$store
+          .dispatch("doChangeTodoState", {
+            todoId,
+            todoState: "作業中",
+          })
+          .then((this.todoList[todoId].todoState = "作業中"))
+          .catch((error) => {
+            console.error(error);
+          });
       }
     },
   },
